@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+<description>
+geos  http://trac.osgeo.org/geos/
+rgdal http://www.gdal.org/
+proj http://trac.osgeo.org/proj/
+</description>
+
+<copyright>
+Copyright (c) 2000 - 2011 The Regents of the University of California.
+All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
+</copyright>
+
+<changelog>
+</changelog>
+
+<package>geos</package>
+<package>gdal</package>
+<package>proj</package>
+<package>r-geo</package>
+<package>geo-modules</package>
+<package>geo-roll-test</package>
+
+</kickstart>

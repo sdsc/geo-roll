@@ -56,6 +56,7 @@
 
 SRCDIRS = `find . -type d -maxdepth 1 \
 	-not -name CVS \
-        -not -name geos-modules \
+        -not -name geo-modules \
+        -not -name r-geo \
         -not -name build-\* \
-	-not -name .` geos-modules
+	-not -name .` r-geo geo-modules

@@ -1,3 +1,4 @@
+#
 # $Id$
 #
 # @Copyright@
@@ -55,40 +56,21 @@
 # @Copyright@
 #
 # $Log$
+#
 
+PKGROOT = /root/rolltests
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
 
-build: $(SRC_DIRS)
-	( \
-	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE); \
-	)
-	@echo "::: Package $(NAME) build complete :::"
-	
+build:
+
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geos
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
-	( \
-	  cd $(SOURCE_DIR); \
-	  $(MAKE) install; \
-	)
-	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-geos
-	umount $(PKGROOT)
-	-rmdir $(PKGROOT)
-	-rmdir $(ROOT)/$(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geo-modules
-	cat geos.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/geos!g;s!VERSION!$(VERSION)!g" \
-	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
-	@echo "::: Package $(NAME) install complete :::"
+	  mkdir -p $(ROOT)/$(PKGROOT)
+	  cp *.t $(ROOT)/$(PKGROOT)/
+	  perl -pi -e 's/ROLLCOMPILER/$(ROLLCOMPILER)/g' $(ROOT)/$(PKGROOT)/*.t
+	  perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/*.t
+	  perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/*.t
 
 clean::
-	rm -rf $(SOURCE_DIR)
-	-umount $(PKGROOT)
-

@@ -63,32 +63,24 @@ include Rules.mk
 include pull.mk
 
 build: $(SRC_DIRS)
-	( \
-	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE); \
-	)
+	cp patch-files/*config .
+	perl -pi -e "s!BUILD_PATH!$(REDHAT.ROOT)/src!g" gdal-config
+	perl -pi -e "s!BUILD_PATH!$(REDHAT.ROOT)/src!g" geos-config
+	@echo $(TAR_GZ_PKGS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geos
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
-	( \
-	  cd $(SOURCE_DIR); \
-	  $(MAKE) install; \
-	)
-	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-geos
-	umount $(PKGROOT)
-	-rmdir $(PKGROOT)
-	-rmdir $(ROOT)/$(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geo-modules
-	cat geos.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/geos!g;s!VERSION!$(VERSION)!g" \
-	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
+	mkdir -p $(ROOT)/$(PKGROOT)/local/lib
+	mkdir -p $(PKGROOT)/local/lib
+	if test -r install_packages.sh; then \
+          export CC=gcc; \
+          export CXX=g++; \
+	  bash install_packages.sh $(PKGROOT) $(RGDAL_VERSION) $(REDHAT.ROOT)/src $(PWD); \
+	fi
+	rm -rf  $(PKGROOT)/local/lib/00LOCK*
+	mv $(PKGROOT)/local/lib/rgeos $(ROOT)/$(PKGROOT)/local/lib
+	mv $(PKGROOT)/local/lib/rgdal $(ROOT)/$(PKGROOT)/local/lib
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
-	-umount $(PKGROOT)
-
+	rm -f *config

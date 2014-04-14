@@ -56,39 +56,24 @@
 #
 # $Log$
 
-REDHAT.ROOT = $(CURDIR)/../../
+REDHAT.ROOT     = $(PWD)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
 
-build: $(SRC_DIRS)
-	( \
-	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE); \
-	)
-	@echo "::: Package $(NAME) build complete :::"
-	
+
+build:
+
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geos
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-	  cd $(SOURCE_DIR); \
-	  $(MAKE) install; \
-	)
-	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-geos
-	umount $(PKGROOT)
-	-rmdir $(PKGROOT)
-	-rmdir $(ROOT)/$(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geo-modules
-	cat geos.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/geos!g;s!VERSION!$(VERSION)!g" \
-	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
-	@echo "::: Package $(NAME) install complete :::"
+           modulefiles=`ls $(REDHAT.ROOT)/src/build-geo-modules/*.module 2>/dev/null`; \
+           if test  -n "$${modulefiles}"; then \
+                for modulefile in $${modulefiles}; do \
+                    perl -pi -e "s!ROOT_PKGROOT!$(ROOT)!g" $${modulefile}; \
+                    bash $${modulefile}; \
+                done; \
+           fi \
+        )
+
 
 clean::
-	rm -rf $(SOURCE_DIR)
-	-umount $(PKGROOT)
-

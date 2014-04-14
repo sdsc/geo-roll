@@ -71,24 +71,21 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geos
+	mkdir -p $(ROOT)/$(PKGROOT)
+	mkdir -p $(REDHAT.ROOT)/src/build-gdal
 	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) install; \
 	)
-	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-geos
+	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-gdal
 	umount $(PKGROOT)
-	-rmdir $(PKGROOT)
-	-rmdir $(ROOT)/$(PKGROOT)
 	mkdir -p $(REDHAT.ROOT)/src/build-geo-modules
-	cat geos.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/geos!g;s!VERSION!$(VERSION)!g" \
+	cat gdal.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/gdal!g;s!VERSION!$(VERSION)!g" \
 	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
 	rm -rf $(SOURCE_DIR)
-	-umount $(PKGROOT)
 
