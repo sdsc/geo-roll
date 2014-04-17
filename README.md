@@ -23,7 +23,7 @@ Rocks development machine.
 
 
 ## Dependencies
-The R and r-modules rolls must already be installed
+The [R](https://github.com/sdsc/R-roll/) and [r-modules](https://github.com/sdsc/r-modules-roll/) rolls must already be installed
 
 The rgeos R library depends on the geos installation.
 The rgdal R library depends on the gdal and proj installation
