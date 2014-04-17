@@ -29,6 +29,11 @@ The rgeos R library depends on the geos installation.
 The rgdal R library depends on the gdal and proj installation
 The compile order in src/linux.mk enforces these last two dependencies
 
+The path to R is /opt/R/bin/R
+The path to the library install directory is: /opt/R/local/lib
+
+These paths are set when the r-modules package builds
+
 
 ## Building
 
