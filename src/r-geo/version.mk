@@ -1,5 +1,5 @@
 NAME               = r-geo
-RELEASE            = 0
+RELEASE            = 1
 PKGROOT            = /opt/R
 VERSION            = 1.0
 

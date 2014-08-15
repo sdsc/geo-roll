@@ -1,4 +1,4 @@
-ROLLNAME = geos
+ROLLNAME = geo
 RELEASE  = 1
 COLOR    = orange
 
