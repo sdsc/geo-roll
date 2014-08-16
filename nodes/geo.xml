@@ -19,8 +19,6 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>geos</package>
 <package>gdal</package>
 <package>proj</package>
-<package>r-geo</package>
 <package>geo-modules</package>
-<package>geo-roll-test</package>
 
 </kickstart>
