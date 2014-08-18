@@ -66,8 +66,6 @@ default: roll
 clean::
 	rm -f _arch bootstrap.py
 
-cvsclean: clean
-	rm -fr RPMS SRPMS
-
 distclean:: clean
+	rm -fr RPMS SRPMS
 	-rm -rf build.log src/build-*
