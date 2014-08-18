@@ -1,7 +1,6 @@
 NAME    = proj
 VERSION = 4.8.0
-RELEASE = 1
-PKGROOT = /opt/proj
+RELEASE = 2
 
 SRC_SUBDIR         = proj
 

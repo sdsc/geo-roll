@@ -57,6 +57,7 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/geos
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -66,29 +67,23 @@ build: $(SRC_DIRS)
 	( \
 	  cd $(SOURCE_DIR); \
 	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE); \
+	  $(MAKE) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geos
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
 	  cd $(SOURCE_DIR); \
-	  $(MAKE) install; \
+	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
-	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-geos
-	umount $(PKGROOT)
-	-rmdir $(PKGROOT)
-	-rmdir $(ROOT)/$(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geo-modules
+	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geos
+	cp -r $(ROOT)/$(PKGROOT)/* $(REDHAT.ROOT)/src/build-geos
+	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geo-modules
 	cat geos.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/geos!g;s!VERSION!$(VERSION)!g" \
 	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
 	rm -rf $(SOURCE_DIR)
-	-umount $(PKGROOT)
 

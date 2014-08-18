@@ -1,7 +1,6 @@
 NAME               = gdal
 VERSION            = 1.9.2
-RELEASE            = 1
-PKGROOT            = /opt/gdal
+RELEASE            = 2
 
 SRC_SUBDIR         = gdal
 

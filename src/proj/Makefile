@@ -57,6 +57,7 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/proj
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -66,22 +67,19 @@ build: $(SRC_DIRS)
 	( \
 	  cd $(SOURCE_DIR); \
 	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE); \
+	  $(MAKE) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/$(NAME)
-	mkdir -p -m 755 $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-proj
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
 	  cd $(SOURCE_DIR); \
-	  $(MAKE) install; \
+	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
-	cp -r $(PKGROOT)/* $(REDHAT.ROOT)/src/build-proj
-	umount $(PKGROOT)
-	mkdir -p $(REDHAT.ROOT)/src/build-geo-modules
+	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-proj
+	cp -r $(ROOT)/$(PKGROOT)/* $(REDHAT.ROOT)/src/build-proj
+	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geo-modules
 	cat proj.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/proj!g;s!VERSION!$(VERSION)!g" \
 	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
