@@ -57,30 +57,59 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/R/local/lib
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
+CRAN = http://cran.stat.ucla.edu
+GDAL_CACHE = $(REDHAT.ROOT)/src/build-gdal
+GEOS_CACHE = $(REDHAT.ROOT)/src/build-geos
+PROJ_CACHE = $(REDHAT.ROOT)/src/build-proj
+RGDAL_OPTS = --with-gdal-config=$(GDAL_CACHE)/bin/gdal-config \
+             --with-proj-include=$(PROJ_CACHE)/include \
+             --with-proj-lib=$(PROJ_CACHE)/lib \
+             --with-proj-share=$(PROJ_CACHE)/share/proj
+RGEOS_OPTS = --with-geos-config=$(GEOS_CACHE)/bin/geos-config
+
+COMPILERSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load gnu || true; \
+  fi; \
+  echo === Compiler and version ===; \
+  $(CC) --version
+
+RSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load R || true; \
+  fi; \
+  echo === R version ===; \
+  R --version
+
 build: $(SRC_DIRS)
-	cp patch-files/*config .
-	perl -pi -e "s!BUILD_PATH!$(REDHAT.ROOT)/src!g" gdal-config
-	perl -pi -e "s!BUILD_PATH!$(REDHAT.ROOT)/src!g" geos-config
-	@echo $(TAR_GZ_PKGS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/local/lib
-	mkdir -p $(PKGROOT)/local/lib
-	if test -r install_packages.sh; then \
-          export CC=gcc; \
-          export CXX=g++; \
-	  bash install_packages.sh $(PKGROOT) $(RGDAL_VERSION) $(REDHAT.ROOT)/src $(PWD); \
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	-mkdir -p -m 755 $(PKGROOT)
+	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+	( \
+	  $(COMPILERSETUP); \
+	  $(RSETUP); \
+	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
+	  Rscript install_package.R $(CRAN) $(PKGROOT) rgdal "$(RGDAL_OPTS)"; \
+	  Rscript install_package.R $(CRAN) $(PKGROOT) rgeos "$(RGEOS_OPTS)" \
+	)
+	umount $(PKGROOT)
+	-rmdir -p $(PKGROOT)
+	if test ! -d $(ROOT)/$(PKGROOT)/rgdal -o \
+	        ! -d $(ROOT)/$(PKGROOT)/rgeos; then \
+	  exit 2; \
 	fi
-	rm -rf  $(PKGROOT)/local/lib/00LOCK*
-	mv $(PKGROOT)/local/lib/rgeos $(ROOT)/$(PKGROOT)/local/lib
-	mv $(PKGROOT)/local/lib/rgdal $(ROOT)/$(PKGROOT)/local/lib
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -f *config
+
