@@ -63,8 +63,19 @@ PKGROOT = /opt/proj
 include Rules.mk
 include pull.mk
 
+PROJ_CACHE = $(REDHAT.ROOT)/src/build-proj
+
+COMPILERSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load gnu || true; \
+  fi; \
+  echo === Compiler and version ===; \
+  $(CC) --version
+
 build: $(SRC_DIRS)
 	( \
+	  $(COMPILERSETUP); \
 	  cd $(SOURCE_DIR); \
 	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) \
@@ -77,8 +88,11 @@ install::
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
-	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-proj
-	cp -r $(ROOT)/$(PKGROOT)/* $(REDHAT.ROOT)/src/build-proj
+	mkdir -p -m 755 $(PROJ_CACHE)
+	cp -r $(ROOT)/$(PKGROOT)/* $(PROJ_CACHE)/
+	# Fix paths in cached copy
+	perl -pi -e "s#$(PKGROOT)#$(PROJ_CACHE)#g" \
+	  `find $(PROJ_CACHE) -type f -exec grep -Il . {} ';'`
 	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geo-modules
 	cat proj.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/proj!g;s!VERSION!$(VERSION)!g" \
 	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module

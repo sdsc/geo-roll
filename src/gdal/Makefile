@@ -63,8 +63,19 @@ PKGROOT = /opt/gdal
 include Rules.mk
 include pull.mk
 
+GDAL_CACHE = $(REDHAT.ROOT)/src/build-gdal
+
+COMPILERSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load gnu || true; \
+  fi; \
+  echo === Compiler and version ===; \
+  $(CC) --version
+
 build: $(SRC_DIRS)
 	( \
+	  $(COMPILERSETUP); \
 	  cd $(SOURCE_DIR); \
 	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) \
@@ -77,8 +88,11 @@ install::
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
-	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-gdal
-	cp -r $(ROOT)/$(PKGROOT)/* $(REDHAT.ROOT)/src/build-gdal
+	mkdir -p -m 755 $(GDAL_CACHE)
+	cp -r $(ROOT)/$(PKGROOT)/* $(GDAL_CACHE)/
+	# Fix paths in cached copy
+	perl -pi -e "s#$(PKGROOT)#$(GDAL_CACHE)#g" \
+	  `find $(GDAL_CACHE) -type f -exec grep -Il . {} ';'`
 	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geo-modules
 	cat gdal.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/gdal!g;s!VERSION!$(VERSION)!g" \
 	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
