@@ -70,3 +70,13 @@ module files in:
 ```shell
 /opt/modulefiles/applications/geo
 
+## Testing
+
+The geo-roll includes a test script which can be run to verify proper
+installation of the geo-roll binaries and module files. To run the test scripts
+execute the following command(s):
+
+```shell
+% /root/rolltests/geo.t 
+```
+
