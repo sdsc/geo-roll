@@ -69,3 +69,4 @@ clean::
 distclean:: clean
 	rm -fr RPMS SRPMS
 	-rm -rf build.log src/build-*
+	rm -fr RPMS SRPMS
