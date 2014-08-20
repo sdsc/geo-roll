@@ -5,6 +5,7 @@ cat > ROOT_PKGROOTMODULEROOT/VERSION <<END
 #%Module1.0
 module-whatis "geos"
 module-whatis "Version: VERSION"
+setenv GEOSHOME /opt/geos
 prepend-path PATH /opt/geos/bin
 prepend-path LD_LIBRARY_PATH /opt/geos/lib
 
