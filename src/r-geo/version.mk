@@ -1,6 +1,6 @@
 NAME       = r-geo
-RELEASE    = 0
 VERSION    = 1.0
+RELEASE    = 1
 PKGROOT    = /opt/R/local/lib
 
 SRC_SUBDIR = r-geo

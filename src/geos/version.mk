@@ -1,6 +1,6 @@
 NAME           = geos
 VERSION        = 3.3.8
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/geos
 
 SRC_SUBDIR     = geos

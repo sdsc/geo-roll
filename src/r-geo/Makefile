@@ -62,6 +62,9 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 include pull.mk
 
+ROLLCOMPILER = gnu
+COMPILERNAME = gnu
+
 CRAN = http://cran.stat.ucla.edu
 GDAL_CACHE = $(REDHAT.ROOT)/src/build-gdal
 GEOS_CACHE = $(REDHAT.ROOT)/src/build-geos
@@ -72,19 +75,20 @@ RGDAL_OPTS = --with-gdal-config=$(GDAL_CACHE)/bin/gdal-config \
              --with-proj-share=$(PROJ_CACHE)/share/proj
 RGEOS_OPTS = --with-geos-config=$(GEOS_CACHE)/bin/geos-config
 
+CC = gcc
+ifeq ("$(COMPILERNAME)", "intel")
+  CC = icc
+else ifeq ("$(COMPILERNAME)", "pgi")
+  CC = pgcc
+endif
+
 COMPILERSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load gnu || true; \
-  fi; \
+  module load $(ROLLCOMPILER) || true; \
   echo === Compiler and version ===; \
   $(CC) --version
 
 RSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load R || true; \
-  fi; \
+  module load R || true; \
   echo === R version ===; \
   R --version
 

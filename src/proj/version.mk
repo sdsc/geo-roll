@@ -1,11 +1,11 @@
 NAME           = proj
 VERSION        = 4.8.0
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/proj
 
 SRC_SUBDIR     = proj
 
-SOURCE_NAME    = $(NAME)
+SOURCE_NAME    = proj
 SOURCE_SUFFIX  = tar.gz
 SOURCE_VERSION = $(VERSION)
 SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)

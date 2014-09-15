@@ -44,10 +44,7 @@ close(OUT);
 open(OUT, ">${TESTFILE}gdal.sh");
 print OUT <<END;
 #!/bin/bash
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load gnu gdal
-fi
+module load ROLLCOMPILER gdal
 gcc -I /opt/gdal/include -L /opt/gdal/lib -lgdal -o ${TESTFILE}gdal.exe ${TESTFILE}gdal.c
 ./${TESTFILE}gdal.exe
 END
@@ -75,10 +72,7 @@ close(OUT);
 open(OUT, ">${TESTFILE}geos.sh");
 print OUT <<END;
 #!/bin/bash
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load gnu geos
-fi
+module load ROLLCOMPILER geos
 g++ -I /opt/geos/include -L /opt/geos/lib -lgeos -o ${TESTFILE}geos.exe ${TESTFILE}geos.cpp
 ./${TESTFILE}geos.exe
 END
@@ -93,10 +87,7 @@ SKIP: {
 open(OUT, ">${TESTFILE}proj.sh");
 print OUT <<END;
 #!/bin/bash
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load proj
-fi
+module load proj
 echo 10 45 | proj +proj=poly
 END
 close(OUT);
@@ -109,8 +100,6 @@ SKIP: {
 
 SKIP: {
 
-  skip 'modules not installed', 3 * int(@PACKAGES)
-    if ! -f '/etc/profile.d/modules.sh';
   foreach my $package(@PACKAGES) {
     `/bin/ls /opt/modulefiles/applications/$package/[0-9]* 2>&1`;
     ok($? == 0, "$package module installed");
@@ -128,7 +117,6 @@ SKIP: {
   ok(-d $ENV{'R_LIBS'}, 'R library created');
   open(OUTPUT, ">$TESTFILE.sh");
   print OUTPUT <<END;
-. /etc/profile.d/modules.sh
 module load R
 echo 'library()' | R --vanilla
 END
