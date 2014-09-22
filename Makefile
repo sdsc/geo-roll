@@ -61,12 +61,17 @@
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-default: roll
+# Make a copy of the node file into which the R-modules build will plug the
+# list of packages for rgdal/rgeos and any prerequisites.
+default:
+	cp nodes/geo-common.xml.in nodes/geo-common.xml
+	$(MAKE) roll
 
 clean::
 	rm -f _arch bootstrap.py
 
 distclean:: clean
+	rm -f nodes/geo-common.xml
 	rm -fr RPMS SRPMS
 	-rm -rf build.log src/build-*
 	rm -fr RPMS SRPMS
