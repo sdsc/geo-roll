@@ -94,10 +94,12 @@ RSETUP = \
   echo === R version ===; \
   R --version
 
+R_MODULES = rgdal rgeos gstat RSAGA spacetime
+
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 
-# Use R to install rgdal/rgeos and any missing prerequisites into a cache dir.
+# Use R to install R modules and any missing prerequisites into a cache dir.
 $(R_MODULES_CACHE):
 	mkdir -p -m 755 $(R_MODULES_CACHE)
 	-mkdir -p -m 755 $(PKGROOT)
@@ -106,17 +108,25 @@ $(R_MODULES_CACHE):
 	  $(COMPILERSETUP); \
 	  $(RSETUP); \
 	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
-	  Rscript install_package.R $(CRAN) $(PKGROOT) rgdal "$(RGDAL_OPTS)"; \
-	  Rscript install_package.R $(CRAN) $(PKGROOT) rgeos "$(RGEOS_OPTS)" \
+	  for F in $(R_MODULES); do \
+	    opts=""; \
+	    if test "$$F" = "rgdal"; then \
+	      opts="$(RGDAL_OPTS)"; \
+	    elif test "$$F" = "rgeos"; then \
+	      opts="$(RGEOS_OPTS)"; \
+	    fi; \
+	    Rscript install_package.R $(CRAN) $(PKGROOT) $$F "$$opts"; \
+	  done \
 	)
 	umount $(PKGROOT)
 	-rmdir -p $(PKGROOT)
-	if test ! -d $(R_MODULES_CACHE)/rgdal -o \
-	        ! -d $(R_MODULES_CACHE)/rgeos; then \
-	  exit 2; \
-	fi
+	for F in $(R_MODULES); do \
+	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
+	    exit 2; \
+	  fi; \
+	done
 	
-# Package rgdal/rgeos and each prequisite into individual rpms, using R to
+# Package R modules and each prequisite into individual rpms, using R to
 # extract the module version number.  Also have to add each rpm name to the
 # geos roll node file so that Rocks will install it.
 install:: $(R_MODULES_CACHE)

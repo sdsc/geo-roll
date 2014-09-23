@@ -10,7 +10,7 @@ my $appliance = $#ARGV >= 0 ? $ARGV[0] :
                 -d '/export/rocks/install' ? 'Frontend' : 'Compute';
 my $installedOnAppliancesPattern = '.';
 my @PACKAGES = ('gdal', 'geos', 'proj');
-my @RMODULES = ('rgeos', 'rgdal');
+my @RMODULES = ('rgdal', 'rgeos', 'gstat', 'RSAGA', 'spacetime');
 my $isCompute = $appliance eq 'Compute';
 my $isFe = $appliance eq 'Frontend';
 my $isLogin = $appliance eq 'Login';
