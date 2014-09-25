@@ -99,9 +99,6 @@ install::
 	# Fix paths in cached copy
 	perl -pi -e "s#$(PKGROOT)#$(GDAL_CACHE)#g" \
 	  `find $(GDAL_CACHE) -type f -exec grep -Il . {} ';'`
-	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geo-modules
-	cat gdal.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/gdal!g;s!VERSION!$(VERSION)!g" \
-	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::

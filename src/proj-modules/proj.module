@@ -1,0 +1,6 @@
+#%Module1.0
+module-whatis "proj"
+module-whatis "Version: VERSION"
+setenv PROJHOME /opt/proj
+prepend-path PATH /opt/proj/bin
+prepend-path LD_LIBRARY_PATH /opt/proj/lib

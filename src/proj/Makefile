@@ -99,9 +99,6 @@ install::
 	# Fix paths in cached copy
 	perl -pi -e "s#$(PKGROOT)#$(PROJ_CACHE)#g" \
 	  `find $(PROJ_CACHE) -type f -exec grep -Il . {} ';'`
-	mkdir -p -m 755 $(REDHAT.ROOT)/src/build-geo-modules
-	cat proj.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/proj!g;s!VERSION!$(VERSION)!g" \
-	  > $(REDHAT.ROOT)/src/build-geo-modules/$(NAME).module
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
