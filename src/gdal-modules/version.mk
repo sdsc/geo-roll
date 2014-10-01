@@ -1,9 +1,12 @@
-NAME        = gdal-modules
-RELEASE     = 0
-PKGROOT     = /opt/modulefiles/applications/gdal
+PACKAGE     = gdal
+CATEGORY    = applications
 
-VERSION_SRC = $(REDHAT.ROOT)/src/gdal/version.mk
+NAME        = $(PACKAGE)-modules
+RELEASE     = 1
+PKGROOT     = /opt/modulefiles/$(CATEGORY)/$(PACKAGE)
+
+VERSION_SRC = $(REDHAT.ROOT)/src/$(PACKAGE)/version.mk
 VERSION_INC = version.inc
 include $(VERSION_INC)
 
-RPM.EXTRAS = AutoReq:No
+RPM.EXTRAS  = AutoReq:No
