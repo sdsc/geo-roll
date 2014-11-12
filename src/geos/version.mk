@@ -1,6 +1,11 @@
-NAME           = geos
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+NAME           = sdsc-geos
 VERSION        = 3.4.2
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/geos
 
 SRC_SUBDIR     = geos

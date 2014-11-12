@@ -1,6 +1,11 @@
-NAME           = gdal
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+NAME           = sdsc-gdal
 VERSION        = 1.11.1
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/gdal
 
 SRC_SUBDIR     = gdal

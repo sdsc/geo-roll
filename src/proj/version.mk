@@ -1,6 +1,11 @@
-NAME           = proj
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+NAME           = sdsc-proj
 VERSION        = 4.8.0
-RELEASE        = 3
+RELEASE        = 4
 PKGROOT        = /opt/proj
 
 SRC_SUBDIR     = proj

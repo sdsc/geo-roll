@@ -60,28 +60,31 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-GDAL_CACHE = $(REDHAT.ROOT)/src/build-gdal
+GDAL_CACHE = $(REDHAT.ROOT)/cache/build-gdal
 
-ROLLCOMPILER = gnu
-COMPILERNAME = gnu
+LICENSE_FILES = $(SOURCE_DIR)/LICENSE.TXT
 
-CC = gcc
-ifeq ("$(COMPILERNAME)", "intel")
-  CC = icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CC = pgcc
-endif
+$(NAME).spec: DESCRIPTION LICENSE
 
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "GDAL.*licensed.*MIT" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo MIT > $@
 
 build: $(SRC_DIRS)
 	( \
-	  $(COMPILERSETUP); \
+	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
 	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) \
@@ -94,6 +97,7 @@ install::
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
+	$(INSTALL_LICENSE_FILES)
 	mkdir -p -m 755 $(GDAL_CACHE)
 	cp -r $(ROOT)/$(PKGROOT)/* $(GDAL_CACHE)/
 	# Fix paths in cached copy
@@ -102,5 +106,5 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
 

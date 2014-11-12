@@ -60,28 +60,31 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-ROLLCOMPILER = gnu
-COMPILERNAME = gnu
+GEOS_CACHE = $(REDHAT.ROOT)/cache/build-geos
 
-GEOS_CACHE = $(REDHAT.ROOT)/src/build-geos
+LICENSE_FILES = $(SOURCE_DIR)/COPYING
 
-CC = gcc
-ifeq ("$(COMPILERNAME)", "intel")
-  CC = icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CC = pgcc
-endif
+$(NAME).spec: DESCRIPTION LICENSE
 
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -qF "Version 2.1, February 1999" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo LGPLv2 > $@
 
 build: $(SRC_DIRS)
 	( \
-	  $(COMPILERSETUP); \
+	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
 	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) \
@@ -94,6 +97,7 @@ install::
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
+	$(INSTALL_LICENSE_FILES)
 	mkdir -p -m 755 $(GEOS_CACHE)
 	cp -r $(ROOT)/$(PKGROOT)/* $(GEOS_CACHE)/
 	# Fix paths in cached copy
@@ -102,5 +106,5 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
 
