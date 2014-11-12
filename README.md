@@ -23,33 +23,24 @@ Rocks development machine.
 
 
 ## Dependencies
-The [R](https://github.com/sdsc/R-roll/) and [r-modules](https://github.com/sdsc/r-modules-roll/) rolls must already be installed
 
-The rgeos R library depends on the geos installation.
-The rgdal R library depends on the gdal and proj installation
-The compile order in src/linux.mk enforces these last two dependencies
-
-The path to R is /opt/R/bin/R
-The path to the library install directory is: /opt/R/local/lib
-
-These paths are set when the r-modules package builds
+R must be installed and a modulefile for it must be available.  The R-roll
+provides this.
 
 
 ## Building
 
-To build the geo-roll, execute these instructions on a Rocks development
+To build the geo-roll, execute this on a Rocks development
 machine (e.g., a frontend or development appliance):
 
 ```shell
-% make default 2>&1 | tee build.log
-% grep "RPM build error" build.log
+% make 2>&1 | tee build.log
 ```
 
-If nothing is returned from the grep command then the roll should have been
-created as... `geo-*.iso`. If you built the roll on a Rocks frontend then
-proceed to the installation step. If you built the roll on a Rocks development
-appliance you need to copy the roll to your Rocks frontend before continuing
-with installation.
+A successful build will create the file `geo-*.disk1.iso`.  If you built the
+roll on a Rocks frontend, proceed to the installation step. If you built the
+roll on a Rocks development appliance, you need to copy the roll to your Rocks
+frontend before continuing with installation.
 
 
 ## Installation
@@ -73,7 +64,7 @@ module files in:
 ## Testing
 
 The geo-roll includes a test script which can be run to verify proper
-installation of the geo-roll binaries and module files. To run the test scripts
+installation of the roll binaries and module files. To run the test scripts
 execute the following command(s):
 
 ```shell
