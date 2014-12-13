@@ -24,8 +24,12 @@ Rocks development machine.
 
 ## Dependencies
 
-R must be installed and a modulefile for it must be available.  The R-roll
-provides this.
+The sdsc-roll must be installed on the build machine, since the build process
+depends on make include files provided by that roll.
+
+The roll sources assume that modulefiles provided by SDSC compiler and R
+rolls are available, but it will build without them as long as the environment
+variables they provide are otherwise defined.
 
 
 ## Building
