@@ -65,8 +65,6 @@ include $(SDSCDEVEL)/Rules.mk
 
 PROJ_CACHE = $(REDHAT.ROOT)/cache/build-proj
 
-LICENSE_FILES = $(SOURCE_DIR)/COPYING
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -77,9 +75,7 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -qF "MIT style license" $(LICENSE_FILES); then \
-	  exit 2; \
-	fi
+	$(CHECK_LICENSE_FILES)
 	echo MIT > $@
 
 build: $(SRC_DIRS)

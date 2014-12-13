@@ -65,8 +65,6 @@ include $(SDSCDEVEL)/Rules.mk
 
 GDAL_CACHE = $(REDHAT.ROOT)/cache/build-gdal
 
-LICENSE_FILES = $(SOURCE_DIR)/LICENSE.TXT
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -77,9 +75,7 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -q "GDAL.*licensed.*MIT" $(LICENSE_FILES); then \
-	  exit 2; \
-	fi
+	$(CHECK_LICENSE_FILES)
 	echo MIT > $@
 
 build: $(SRC_DIRS)

@@ -65,8 +65,6 @@ include $(SDSCDEVEL)/Rules.mk
 
 GEOS_CACHE = $(REDHAT.ROOT)/cache/build-geos
 
-LICENSE_FILES = $(SOURCE_DIR)/COPYING
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -77,9 +75,7 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -qF "Version 2.1, February 1999" $(LICENSE_FILES); then \
-	  exit 2; \
-	fi
+	$(CHECK_LICENSE_FILES)
 	echo LGPLv2 > $@
 
 build: $(SRC_DIRS)
