@@ -63,7 +63,6 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-CRAN = http://cran.stat.ucla.edu
 GDAL_CACHE = $(REDHAT.ROOT)/cache/build-gdal
 GEOS_CACHE = $(REDHAT.ROOT)/cache/build-geos
 PROJ_CACHE = $(REDHAT.ROOT)/cache/build-proj
@@ -75,8 +74,6 @@ RGEOS_OPTS = --with-geos-config=$(GEOS_CACHE)/bin/geos-config
 NODE_FILE = $(REDHAT.ROOT)/nodes/geo-common.xml
 
 R_MODULES_CACHE = $(REDHAT.ROOT)/cache/build-rgeo
-
-R_MODULES = rgdal rgeos gstat RSAGA spacetime
 
 LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 
@@ -108,6 +105,7 @@ $(R_MODULES_CACHE):
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_R); \
 	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
+	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
 	  for F in $(R_MODULES); do \
 	    opts=""; \
 	    if test "$$F" = "rgdal"; then \
@@ -115,12 +113,13 @@ $(R_MODULES_CACHE):
 	    elif test "$$F" = "rgeos"; then \
 	      opts="$(RGEOS_OPTS)"; \
 	    fi; \
-	    Rscript install_package.R $(CRAN) $(PKGROOT) $$F "$$opts"; \
+	    R CMD INSTALL $$F*gz --configure-args="$$opts"; \
 	  done \
 	)
 	$(call BIND_UMOUNT, $(PKGROOT))
 	for F in $(R_MODULES); do \
 	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
+	    echo error: module $$F build failed; \
 	    exit 2; \
 	  fi; \
 	done
@@ -142,4 +141,4 @@ install:: $(R_MODULES_CACHE)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -f DESCRIPTION LICENSE
+	rm -fr DESCRIPTION LICENSE $(R_MODULES)
