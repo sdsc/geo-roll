@@ -80,7 +80,7 @@ LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
-	$(MODULE_LOAD_CC);
+	$(MODULE_LOAD_CC); \
 	( \
 	  $(DESCRIBE_PKG); \
 	  $(DESCRIBE_CC); \
@@ -126,7 +126,7 @@ $(R_MODULES_CACHE):
 	
 # Package R modules and each prequisite into individual rpms, using R to
 # extract the module version number.  Also have to add each rpm name to the
-# geos roll node file so that Rocks will install it.
+# roll node file so that Rocks will install it.
 install:: $(R_MODULES_CACHE)
 	-mkdir -p -m 755 $(ROOT)/$(PKGROOT)
 	if test -z "$(R_MODULE)"; then \
