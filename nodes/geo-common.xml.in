@@ -13,11 +13,13 @@ Copyright (c) 2000 - 2014 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
 
-<package>sdsc-geos</package>
 <package>sdsc-gdal</package>
+<package>sdsc-gdal-modules</package>
+<package>sdsc-geos</package>
+<package>sdsc-geos-modules</package>
 <package>sdsc-proj</package>
+<package>sdsc-proj-modules</package>
 <package>sdsc-geo-R-modules</package>
-<package>sdsc-geo-modules</package>
 <package>sdsc-geo-roll-test</package>
 
 </kickstart>
