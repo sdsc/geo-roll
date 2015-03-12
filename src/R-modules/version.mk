@@ -1,5 +1,5 @@
 NAME              = sdsc-geo-R-modules
-VERSION           = 2
+VERSION           = 3
 RELEASE           = 0
 PKGROOT           = /opt/R/local/lib
 
@@ -17,13 +17,13 @@ FNN_DIR           = $(FNN_NAME)
 
 FOREIGN_NAME      = foreign
 FOREIGN_SUFFIX    = tar.gz
-FOREIGN_VERSION   = 0.8-62
+FOREIGN_VERSION   = 0.8-63
 FOREIGN_PKG       = $(FOREIGN_NAME)_$(FOREIGN_VERSION).$(FOREIGN_SUFFIX)
 FOREIGN_DIR       = $(FOREIGN_NAME)
 
 GSTAT_NAME        = gstat
 GSTAT_SUFFIX      = tar.gz
-GSTAT_VERSION     = 1.0-20
+GSTAT_VERSION     = 1.0-21
 GSTAT_PKG         = $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX)
 GSTAT_DIR         = $(GSTAT_NAME)
 
@@ -41,7 +41,7 @@ PLYR_DIR          = $(PLYR_NAME)
 
 RCPP_NAME         = Rcpp
 RCPP_SUFFIX       = tar.gz
-RCPP_VERSION      = 0.11.3
+RCPP_VERSION      = 0.11.5
 RCPP_PKG          = $(RCPP_NAME)_$(RCPP_VERSION).$(RCPP_SUFFIX)
 RCPP_DIR          = $(RCPP_NAME)
 
@@ -77,7 +77,7 @@ SP_DIR            = $(SP_NAME)
 
 SPACETIME_NAME    = spacetime
 SPACETIME_SUFFIX  = tar.gz
-SPACETIME_VERSION = 1.1-1
+SPACETIME_VERSION = 1.1-3
 SPACETIME_PKG     = $(SPACETIME_NAME)_$(SPACETIME_VERSION).$(SPACETIME_SUFFIX)
 SPACETIME_DIR     = $(SPACETIME_NAME)
 
