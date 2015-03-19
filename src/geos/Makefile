@@ -82,6 +82,8 @@ build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
+	  export CC=$(CC); \
+	  export CXX=$(CXX); \
 	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) \
 	)
@@ -90,6 +92,7 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
+	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
