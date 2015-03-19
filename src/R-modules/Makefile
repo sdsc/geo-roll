@@ -113,6 +113,7 @@ $(R_MODULES_CACHE):
 	    elif test "$$F" = "rgeos"; then \
 	      opts="$(RGEOS_OPTS)"; \
 	    fi; \
+	    export CC=$(CC); \
 	    R CMD INSTALL $$F*gz --configure-args="$$opts"; \
 	  done \
 	)
