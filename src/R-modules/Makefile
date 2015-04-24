@@ -95,6 +95,8 @@ LICENSE: $(SRC_DIRS)
 	echo GPL > $@
 
 build: $(SRC_DIRS)
+	patch -f $(GSTAT_NAME)/src/matrix.h patch-files/matrix.h.patch
+	tar czf $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX) $(GSTAT_NAME)
 	@echo "::: Package $(NAME) build complete :::"
 
 # Use R to install R modules and any missing prerequisites into a cache dir.
@@ -142,4 +144,4 @@ install:: $(R_MODULES_CACHE)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -fr DESCRIPTION LICENSE $(R_MODULES)
+	rm -fr DESCRIPTION LICENSE $(R_MODULES)  $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX)
