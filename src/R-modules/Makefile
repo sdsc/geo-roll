@@ -80,10 +80,8 @@ LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
-	$(MODULE_LOAD_CC); \
 	( \
 	  $(DESCRIBE_PKG); \
-	  $(DESCRIBE_CC); \
 	  $(DESCRIBE_R) \
 	) > $@
 
@@ -95,16 +93,15 @@ LICENSE: $(SRC_DIRS)
 	echo GPL > $@
 
 build: $(SRC_DIRS)
-	patch -f $(GSTAT_NAME)/src/matrix.h patch-files/matrix.h.patch
-	tar czf $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX) $(GSTAT_NAME)
 	@echo "::: Package $(NAME) build complete :::"
 
 # Use R to install R modules and any missing prerequisites into a cache dir.
+# NOTE: export of CC/CFLAGS forces gstat configure script to use same CC/CFLAGS
+# that R uses; otherwise, build fails because it gets settings wrong
 $(R_MODULES_CACHE):
 	mkdir -p -m 755 $(R_MODULES_CACHE)
 	$(call BIND_MOUNT, $(PKGROOT), $(R_MODULES_CACHE))
 	( \
-	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_R); \
 	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
 	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
@@ -115,7 +112,8 @@ $(R_MODULES_CACHE):
 	    elif test "$$F" = "rgeos"; then \
 	      opts="$(RGEOS_OPTS)"; \
 	    fi; \
-	    export CC=$(CC); \
+	    export CC=`R CMD config CC`; \
+	    export CFLAGS=`R CMD config CFLAGS`; \
 	    R CMD INSTALL $$F*gz --configure-args="$$opts"; \
 	  done \
 	)
@@ -144,4 +142,4 @@ install:: $(R_MODULES_CACHE)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -fr DESCRIPTION LICENSE $(R_MODULES)  $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX)
+	rm -fr DESCRIPTION LICENSE $(R_MODULES)
