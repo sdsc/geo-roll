@@ -105,6 +105,8 @@ $(R_MODULES_CACHE):
 	  $(MODULE_LOAD_R); \
 	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
 	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
+	  export CC=`R CMD config CC`; \
+	  export CFLAGS=`R CMD config CFLAGS`; \
 	  for F in $(R_MODULES); do \
 	    opts=""; \
 	    if test "$$F" = "rgdal"; then \
@@ -112,8 +114,6 @@ $(R_MODULES_CACHE):
 	    elif test "$$F" = "rgeos"; then \
 	      opts="$(RGEOS_OPTS)"; \
 	    fi; \
-	    export CC=`R CMD config CC`; \
-	    export CFLAGS=`R CMD config CFLAGS`; \
 	    R CMD INSTALL $$F*gz --configure-args="$$opts"; \
 	  done \
 	)
