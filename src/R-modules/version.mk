@@ -1,5 +1,5 @@
 NAME              = sdsc-geo-R-modules
-VERSION           = 3
+VERSION           = 4
 RELEASE           = 0
 PKGROOT           = /opt/R/local/lib
 

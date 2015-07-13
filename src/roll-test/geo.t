@@ -88,7 +88,7 @@ open(OUT, ">${TESTFILE}proj.sh");
 print OUT <<END;
 #!/bin/bash
 module load proj
-echo 10 45 | proj +proj=poly
+echo 10 45 | proj +proj=poly +ellps=clrk66
 END
 close(OUT);
 
