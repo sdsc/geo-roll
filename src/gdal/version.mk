@@ -4,7 +4,7 @@ endif
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-gdal
-VERSION        = 1.11.2
+VERSION        = 2.0.2
 RELEASE        = 0
 PKGROOT        = /opt/gdal
 
