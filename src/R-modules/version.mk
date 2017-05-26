@@ -6,8 +6,8 @@ PKGROOT           = /opt/R/local/lib
 SRC_SUBDIR        = R-modules
 
 # Ordered with dependent modules after prerequisites
-R_MODULES = sp zoo xts intervals rgdal rgeos spacetime FNN gstat foreign \
-            shapefiles Rcpp plyr RSAGA
+R_MODULES = xts intervals rgdal rgeos spacetime FNN gstat foreign \
+            shapefiles RSAGA
 
 FNN_NAME          = FNN
 FNN_SUFFIX        = tar.gz
@@ -33,18 +33,6 @@ INTERVALS_VERSION = 0.15.1
 INTERVALS_PKG     = $(INTERVALS_NAME)_$(INTERVALS_VERSION).$(INTERVALS_SUFFIX)
 INTERVALS_DIR     = $(INTERVALS_NAME)
 
-PLYR_NAME         = plyr
-PLYR_SUFFIX       = tar.gz
-PLYR_VERSION      = 1.8.4
-PLYR_PKG          = $(PLYR_NAME)_$(PLYR_VERSION).$(PLYR_SUFFIX)
-PLYR_DIR          = $(PLYR_NAME)
-
-RCPP_NAME         = Rcpp
-RCPP_SUFFIX       = tar.gz
-RCPP_VERSION      = 0.12.11
-RCPP_PKG          = $(RCPP_NAME)_$(RCPP_VERSION).$(RCPP_SUFFIX)
-RCPP_DIR          = $(RCPP_NAME)
-
 RGDAL_NAME        = rgdal
 RGDAL_SUFFIX      = tar.gz
 RGDAL_VERSION     = 1.2-7
@@ -69,12 +57,6 @@ SHAPEFILES_VERSION= 0.7
 SHAPEFILES_PKG    = $(SHAPEFILES_NAME)_$(SHAPEFILES_VERSION).$(SHAPEFILES_SUFFIX)
 SHAPEFILES_DIR    = $(SHAPEFILES_NAME)
 
-SP_NAME           = sp
-SP_SUFFIX         = tar.gz
-SP_VERSION        = 1.2-4
-SP_PKG            = $(SP_NAME)_$(SP_VERSION).$(SP_SUFFIX)
-SP_DIR            = $(SP_NAME)
-
 SPACETIME_NAME    = spacetime
 SPACETIME_SUFFIX  = tar.gz
 SPACETIME_VERSION = 1.2-0
@@ -87,15 +69,10 @@ XTS_VERSION       = 0.9-7
 XTS_PKG           = $(XTS_NAME)_$(XTS_VERSION).$(XTS_SUFFIX)
 XTS_DIR           = $(XTS_NAME)
 
-ZOO_NAME          = zoo
-ZOO_SUFFIX        = tar.gz
-ZOO_VERSION       = 1.8-0
-ZOO_PKG           = $(ZOO_NAME)_$(ZOO_VERSION).$(ZOO_SUFFIX)
-ZOO_DIR           = $(ZOO_NAME)
 
 TAR_GZ_PKGS       = \
-  $(FNN_PKG) $(FOREIGN_PKG) $(GSTAT_PKG) $(INTERVALS_PKG) $(PLYR_PKG) \
-  $(RCPP_PKG) $(RGDAL_PKG) $(RGEOS_PKG) $(RSAGA_PKG) $(SHAPEFILES_PKG) \
-  $(SP_PKG) $(SPACETIME_PKG) $(XTS_PKG) $(ZOO_PKG)
+  $(FNN_PKG) $(FOREIGN_PKG) $(GSTAT_PKG) $(INTERVALS_PKG) \
+  $(RGDAL_PKG) $(RGEOS_PKG) $(RSAGA_PKG) $(SHAPEFILES_PKG) \
+  $(SPACETIME_PKG) $(XTS_PKG)
 
 RPM.EXTRAS        = AutoReq:No
