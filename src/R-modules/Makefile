@@ -75,6 +75,8 @@ NODE_FILE = $(REDHAT.ROOT)/nodes/geo-common.xml
 
 R_MODULES_CACHE = $(REDHAT.ROOT)/cache/build-rgeo
 
+R_LIB_TEMP = $(REDHAT.ROOT)/r_lib
+
 LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 
 $(NAME).spec: DESCRIPTION LICENSE
@@ -100,6 +102,8 @@ build: $(SRC_DIRS)
 # that R uses; otherwise, build fails because it gets settings wrong
 $(R_MODULES_CACHE):
 	mkdir -p -m 755 $(R_MODULES_CACHE)
+	mkdir -p -m 755 $(R_LIB_TEMP)
+	mv $(PKGROOT)/* $(R_LIB_TEMP); \
 	$(call BIND_MOUNT, $(PKGROOT), $(R_MODULES_CACHE))
 	( \
 	  $(MODULE_LOAD_R); \
@@ -107,6 +111,7 @@ $(R_MODULES_CACHE):
 	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
 	  export CC=`R CMD config CC`; \
 	  export CFLAGS=`R CMD config CFLAGS`; \
+          export R_LIBS=$(R_LIB_TEMP):$${R_LIBS}; \
 	  for F in $(R_MODULES); do \
 	    opts=""; \
 	    if test "$$F" = "rgdal"; then \
@@ -118,6 +123,7 @@ $(R_MODULES_CACHE):
 	  done \
 	)
 	$(call BIND_UMOUNT, $(PKGROOT))
+	mv $(R_LIB_TEMP)/* $(PKGROOT); \
 	for F in $(R_MODULES); do \
 	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
 	    echo error: module $$F build failed; \
