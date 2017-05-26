@@ -142,7 +142,7 @@ install:: $(R_MODULES_CACHE)
 	   else \
 	       cp -r $(R_MODULES_CACHE)/$(R_MODULE) $(ROOT)/$(PKGROOT); \
 	  fi \
-        \) 
+        ) 
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
