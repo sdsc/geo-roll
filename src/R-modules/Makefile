@@ -75,7 +75,7 @@ NODE_FILE = $(REDHAT.ROOT)/nodes/geo-common.xml
 
 R_MODULES_CACHE = $(REDHAT.ROOT)/cache/build-rgeo
 
-R_LIB_TEMP = $(REDHAT.ROOT)/r_lib
+R_LIB_TEMP = $(REDHAT.ROOT)/cache/r_lib
 
 LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 
