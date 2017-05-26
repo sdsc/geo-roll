@@ -1,6 +1,6 @@
 NAME              = sdsc-geo-R-modules
 VERSION           = 5
-RELEASE           = 0
+RELEASE           = 1
 PKGROOT           = /opt/R/local/lib
 
 SRC_SUBDIR        = R-modules
@@ -17,13 +17,13 @@ FNN_DIR           = $(FNN_NAME)
 
 FOREIGN_NAME      = foreign
 FOREIGN_SUFFIX    = tar.gz
-FOREIGN_VERSION   = 0.8-66
+FOREIGN_VERSION   = 0.8-68
 FOREIGN_PKG       = $(FOREIGN_NAME)_$(FOREIGN_VERSION).$(FOREIGN_SUFFIX)
 FOREIGN_DIR       = $(FOREIGN_NAME)
 
 GSTAT_NAME        = gstat
 GSTAT_SUFFIX      = tar.gz
-GSTAT_VERSION     = 1.1-3
+GSTAT_VERSION     = 1.1-5
 GSTAT_PKG         = $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX)
 GSTAT_DIR         = $(GSTAT_NAME)
 
@@ -35,25 +35,25 @@ INTERVALS_DIR     = $(INTERVALS_NAME)
 
 PLYR_NAME         = plyr
 PLYR_SUFFIX       = tar.gz
-PLYR_VERSION      = 1.8.3
+PLYR_VERSION      = 1.8.4
 PLYR_PKG          = $(PLYR_NAME)_$(PLYR_VERSION).$(PLYR_SUFFIX)
 PLYR_DIR          = $(PLYR_NAME)
 
 RCPP_NAME         = Rcpp
 RCPP_SUFFIX       = tar.gz
-RCPP_VERSION      = 0.12.4
+RCPP_VERSION      = 0.12.11
 RCPP_PKG          = $(RCPP_NAME)_$(RCPP_VERSION).$(RCPP_SUFFIX)
 RCPP_DIR          = $(RCPP_NAME)
 
 RGDAL_NAME        = rgdal
 RGDAL_SUFFIX      = tar.gz
-RGDAL_VERSION     = 1.1-8
+RGDAL_VERSION     = 1.2-7
 RGDAL_PKG         = $(RGDAL_NAME)_$(RGDAL_VERSION).$(RGDAL_SUFFIX)
 RGDAL_DIR         = $(RGDAL_NAME)
 
 RGEOS_NAME        = rgeos
 RGEOS_SUFFIX      = tar.gz
-RGEOS_VERSION     = 0.3-19
+RGEOS_VERSION     = 0.3-23
 RGEOS_PKG         = $(RGEOS_NAME)_$(RGEOS_VERSION).$(RGEOS_SUFFIX)
 RGEOS_DIR         = $(RGEOS_NAME)
 
@@ -71,13 +71,13 @@ SHAPEFILES_DIR    = $(SHAPEFILES_NAME)
 
 SP_NAME           = sp
 SP_SUFFIX         = tar.gz
-SP_VERSION        = 1.2-3
+SP_VERSION        = 1.2-4
 SP_PKG            = $(SP_NAME)_$(SP_VERSION).$(SP_SUFFIX)
 SP_DIR            = $(SP_NAME)
 
 SPACETIME_NAME    = spacetime
 SPACETIME_SUFFIX  = tar.gz
-SPACETIME_VERSION = 1.1-5
+SPACETIME_VERSION = 1.2-0
 SPACETIME_PKG     = $(SPACETIME_NAME)_$(SPACETIME_VERSION).$(SPACETIME_SUFFIX)
 SPACETIME_DIR     = $(SPACETIME_NAME)
 
@@ -89,7 +89,7 @@ XTS_DIR           = $(XTS_NAME)
 
 ZOO_NAME          = zoo
 ZOO_SUFFIX        = tar.gz
-ZOO_VERSION       = 1.7-12
+ZOO_VERSION       = 1.8-0
 ZOO_PKG           = $(ZOO_NAME)_$(ZOO_VERSION).$(ZOO_SUFFIX)
 ZOO_DIR           = $(ZOO_NAME)
 

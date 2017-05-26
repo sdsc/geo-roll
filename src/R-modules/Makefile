@@ -117,7 +117,7 @@ $(R_MODULES_CACHE):
 	    R CMD INSTALL $$F*gz --configure-args="$$opts"; \
 	  done \
 	)
-	-$(call BIND_UMOUNT, $(PKGROOT))
+	$(call BIND_UMOUNT, $(PKGROOT))
 	for F in $(R_MODULES); do \
 	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
 	    echo error: module $$F build failed; \
