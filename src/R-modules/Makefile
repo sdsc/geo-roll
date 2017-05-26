@@ -123,6 +123,7 @@ $(R_MODULES_CACHE):
 	  done \
 	)
 	$(call BIND_UMOUNT, $(PKGROOT))
+	mkdir -p -m 755 $(PKGROOT)
 	mv $(R_LIB_TEMP)/* $(PKGROOT); \
 	for F in $(R_MODULES); do \
 	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
