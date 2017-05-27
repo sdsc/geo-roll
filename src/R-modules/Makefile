@@ -111,7 +111,7 @@ $(R_MODULES_CACHE):
 	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
 	  export CC=`R CMD config CC`; \
 	  export CFLAGS=`R CMD config CFLAGS`; \
-          export R_LIBS=$(R_LIB_TEMP):$${R_LIBS}; \
+          export R_LIBS=$${R_LIBS}:$(R_LIB_TEMP); \
 	  for F in $(R_MODULES); do \
 	    opts=""; \
 	    if test "$$F" = "rgdal"; then \
