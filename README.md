@@ -2,6 +2,10 @@
 
 This roll bundles the GEOS geometry engine, GDAL (Geospatial Data Abstraction Library) , and PROJ (Cartographic Projections Library) as well as as the R interfaces to geos (rgeos) and gdal (rgdal).
 
+Other dependent R libraries are installed as well:
+
+FNN foreign gstat RSAGA shapefiles spacetime intervals xts
+
 For more information about GEOS,GDAL and PROJ please visit the official web pages:
 
 - <a href="http://trac.osgeo.org/geos/" target="_blank">GEOS</a> is a  C++ port
