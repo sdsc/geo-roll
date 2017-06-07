@@ -35,6 +35,9 @@ The roll sources assume that modulefiles provided by SDSC compiler and R
 rolls are available, but it will build without them as long as the environment
 variables they provide are otherwise defined.
 
+The build assumes that the R plyr, rcpp, sp, and zoo are available to R. The
+SDSC r-modules-roll installs these along with a variety of other R packages.
+
 
 ## Building
 
