@@ -2,6 +2,10 @@
 
 This roll bundles the GEOS geometry engine, GDAL (Geospatial Data Abstraction Library) , and PROJ (Cartographic Projections Library) as well as as the R interfaces to geos (rgeos) and gdal (rgdal).
 
+Other dependent R libraries are installed as well:
+
+FNN foreign gstat RSAGA shapefiles spacetime intervals xts
+
 For more information about GEOS,GDAL and PROJ please visit the official web pages:
 
 - <a href="http://trac.osgeo.org/geos/" target="_blank">GEOS</a> is a  C++ port
@@ -30,6 +34,9 @@ depends on make include files provided by that roll.
 The roll sources assume that modulefiles provided by SDSC compiler and R
 rolls are available, but it will build without them as long as the environment
 variables they provide are otherwise defined.
+
+The build assumes that the R plyr, rcpp, sp, and zoo are available to R. The
+SDSC r-modules-roll installs these along with a variety of other R packages.
 
 
 ## Building
