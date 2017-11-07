@@ -1,6 +1,6 @@
 NAME              = sdsc-geo-R-modules
 VERSION           = 5
-RELEASE           = 1
+RELEASE           = 2
 PKGROOT           = /opt/R/local/lib
 
 SRC_SUBDIR        = R-modules
@@ -76,3 +76,4 @@ TAR_GZ_PKGS       = \
   $(SPACETIME_PKG) $(XTS_PKG)
 
 RPM.EXTRAS        = AutoReq:No
+RPM.PREFIX        = $(PKGROOT)

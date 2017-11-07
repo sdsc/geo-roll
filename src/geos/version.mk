@@ -5,7 +5,7 @@ COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-geos
 VERSION        = 3.6.1
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/geos
 
 SRC_SUBDIR     = geos
@@ -19,3 +19,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_BZ2_PKGS   = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.PREFIX     = $(PKGROOT)

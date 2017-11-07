@@ -5,7 +5,7 @@ COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-gdal
 VERSION        = 2.2.0
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/gdal
 
 SRC_SUBDIR     = gdal
@@ -19,3 +19,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.PREFIX     = $(PKGROOT)
