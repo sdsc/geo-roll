@@ -1,79 +1,25 @@
-NAME              = sdsc-geo-R-modules
-VERSION           = 5
-RELEASE           = 2
-PKGROOT           = /opt/R/local/lib
+NAME          = sdsc-geo-R-modules
+VERSION       = 5
+RELEASE       = 3
+PKGROOT       = /opt/R/local/lib
 
-SRC_SUBDIR        = R-modules
+SRC_SUBDIR    = R-modules
 
-# Ordered with dependent modules after prerequisites
-R_MODULES = xts intervals rgdal rgeos spacetime FNN gstat foreign \
-            shapefiles RSAGA
+R_MODULES = rgdal rgeos
 
-FNN_NAME          = FNN
-FNN_SUFFIX        = tar.gz
-FNN_VERSION       = 1.1
-FNN_PKG           = $(FNN_NAME)_$(FNN_VERSION).$(FNN_SUFFIX)
-FNN_DIR           = $(FNN_NAME)
+RGDAL_NAME    = rgdal
+RGDAL_SUFFIX  = tar.gz
+RGDAL_VERSION = 1.2-7
+RGDAL_PKG     = $(RGDAL_NAME)_$(RGDAL_VERSION).$(RGDAL_SUFFIX)
+RGDAL_DIR     = $(RGDAL_NAME)
 
-FOREIGN_NAME      = foreign
-FOREIGN_SUFFIX    = tar.gz
-FOREIGN_VERSION   = 0.8-68
-FOREIGN_PKG       = $(FOREIGN_NAME)_$(FOREIGN_VERSION).$(FOREIGN_SUFFIX)
-FOREIGN_DIR       = $(FOREIGN_NAME)
+RGEOS_NAME    = rgeos
+RGEOS_SUFFIX  = tar.gz
+RGEOS_VERSION = 0.3-23
+RGEOS_PKG     = $(RGEOS_NAME)_$(RGEOS_VERSION).$(RGEOS_SUFFIX)
+RGEOS_DIR     = $(RGEOS_NAME)
 
-GSTAT_NAME        = gstat
-GSTAT_SUFFIX      = tar.gz
-GSTAT_VERSION     = 1.1-5
-GSTAT_PKG         = $(GSTAT_NAME)_$(GSTAT_VERSION).$(GSTAT_SUFFIX)
-GSTAT_DIR         = $(GSTAT_NAME)
+TAR_GZ_PKGS   = $(RGDAL_PKG) $(RGEOS_PKG)
 
-INTERVALS_NAME    = intervals
-INTERVALS_SUFFIX  = tar.gz
-INTERVALS_VERSION = 0.15.1
-INTERVALS_PKG     = $(INTERVALS_NAME)_$(INTERVALS_VERSION).$(INTERVALS_SUFFIX)
-INTERVALS_DIR     = $(INTERVALS_NAME)
-
-RGDAL_NAME        = rgdal
-RGDAL_SUFFIX      = tar.gz
-RGDAL_VERSION     = 1.2-7
-RGDAL_PKG         = $(RGDAL_NAME)_$(RGDAL_VERSION).$(RGDAL_SUFFIX)
-RGDAL_DIR         = $(RGDAL_NAME)
-
-RGEOS_NAME        = rgeos
-RGEOS_SUFFIX      = tar.gz
-RGEOS_VERSION     = 0.3-23
-RGEOS_PKG         = $(RGEOS_NAME)_$(RGEOS_VERSION).$(RGEOS_SUFFIX)
-RGEOS_DIR         = $(RGEOS_NAME)
-
-RSAGA_NAME        = RSAGA
-RSAGA_SUFFIX      = tar.gz
-RSAGA_VERSION     = 0.94-5
-RSAGA_PKG         = $(RSAGA_NAME)_$(RSAGA_VERSION).$(RSAGA_SUFFIX)
-RSAGA_DIR         = $(RSAGA_NAME)
-
-SHAPEFILES_NAME   = shapefiles
-SHAPEFILES_SUFFIX = tar.gz
-SHAPEFILES_VERSION= 0.7
-SHAPEFILES_PKG    = $(SHAPEFILES_NAME)_$(SHAPEFILES_VERSION).$(SHAPEFILES_SUFFIX)
-SHAPEFILES_DIR    = $(SHAPEFILES_NAME)
-
-SPACETIME_NAME    = spacetime
-SPACETIME_SUFFIX  = tar.gz
-SPACETIME_VERSION = 1.2-0
-SPACETIME_PKG     = $(SPACETIME_NAME)_$(SPACETIME_VERSION).$(SPACETIME_SUFFIX)
-SPACETIME_DIR     = $(SPACETIME_NAME)
-
-XTS_NAME          = xts
-XTS_SUFFIX        = tar.gz
-XTS_VERSION       = 0.9-7
-XTS_PKG           = $(XTS_NAME)_$(XTS_VERSION).$(XTS_SUFFIX)
-XTS_DIR           = $(XTS_NAME)
-
-
-TAR_GZ_PKGS       = \
-  $(FNN_PKG) $(FOREIGN_PKG) $(GSTAT_PKG) $(INTERVALS_PKG) \
-  $(RGDAL_PKG) $(RGEOS_PKG) $(RSAGA_PKG) $(SHAPEFILES_PKG) \
-  $(SPACETIME_PKG) $(XTS_PKG)
-
-RPM.EXTRAS        = AutoReq:No
-RPM.PREFIX        = $(PKGROOT)
+RPM.EXTRAS    = AutoReq:No
+RPM.PREFIX    = $(PKGROOT)
