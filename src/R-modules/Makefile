@@ -74,8 +74,6 @@ NODE_FILE = $(REDHAT.ROOT)/nodes/geo-common.xml
 
 R_MODULES_CACHE = $(REDHAT.ROOT)/cache/build-rgeo
 
-R_LIB_TEMP = $(REDHAT.ROOT)/cache/r_lib
-
 LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 
 $(NAME).spec: DESCRIPTION LICENSE
@@ -97,12 +95,10 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 
 # Use R to install R modules and any missing prerequisites into a cache dir.
-# NOTE: export of CC/CFLAGS forces gstat configure script to use same CC/CFLAGS
-# that R uses; otherwise, build fails because it gets settings wrong
+# NOTE: export of CC/CFLAGS forces package configure to use same CC/CFLAGS
+# that R uses.
 $(R_MODULES_CACHE):
 	mkdir -p -m 755 $(R_MODULES_CACHE)
-	mkdir -p -m 755 $(R_LIB_TEMP)
-	mv $(PKGROOT)/* $(R_LIB_TEMP); \
 	$(call BIND_MOUNT, $(PKGROOT), $(R_MODULES_CACHE))
 	( \
 	  $(MODULE_LOAD_R); \
@@ -110,7 +106,6 @@ $(R_MODULES_CACHE):
 	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
 	  export CC=`R CMD config CC`; \
 	  export CFLAGS=`R CMD config CFLAGS`; \
-          export R_LIBS=$${R_LIBS}:$(R_LIB_TEMP); \
 	  for F in $(R_MODULES); do \
 	    opts=""; \
 	    if test "$$F" = "rgdal"; then \
@@ -118,37 +113,31 @@ $(R_MODULES_CACHE):
 	    elif test "$$F" = "rgeos"; then \
 	      opts="$(RGEOS_OPTS)"; \
 	    fi; \
-	    R CMD INSTALL $$F*gz --configure-args="$$opts"; \
+	    R CMD INSTALL --no-clean-on-error $$F*gz --configure-args="$$opts"; \
 	  done \
 	)
 	$(call BIND_UMOUNT, $(PKGROOT))
-	mkdir -p -m 755 $(PKGROOT)
-	mv $(R_LIB_TEMP)/* $(PKGROOT); \
 	for F in $(R_MODULES); do \
 	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
 	    echo error: module $$F build failed; \
 	    exit 2; \
 	  fi; \
 	done
-	
+
 # Package R modules and each prequisite into individual rpms, using R to
 # extract the module version number.  Also have to add each rpm name to the
 # roll node file so that Rocks will install it.
 install:: $(R_MODULES_CACHE)
 	-mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-	( \
-          if test -z "$(R_MODULE)"; then \
-             $(MODULE_LOAD_R); \
-             export R_LIBS=$(R_MODULES_CACHE):$${R_LIBS}; \
-	     for module in `ls $(R_MODULES_CACHE)`; do \
-	        version=`R -q -e "packageVersion('$${module}')" | grep ^.1 | awk -F"'" '{print $$2}'`; \
-	        $(MAKE) NAME=sdsc-R-$${module} VERSION=$${version} R_MODULE=$${module} rpm; \
-	        perl -pi -e 'print $$_ and s/$(NAME)/sdsc-R-'$${module}'/ if m/$(NAME)/' $(NODE_FILE); \
-	     done; \
-	   else \
-	       cp -r $(R_MODULES_CACHE)/$(R_MODULE) $(ROOT)/$(PKGROOT); \
-	  fi \
-        ) 
+	if test -z "$(R_MODULE)"; then \
+	  for module in `ls $(R_MODULES_CACHE)`; do \
+            version=`module load R && export R_LIBS=$(R_MODULES_CACHE) && R -q -e "packageVersion('$${module}')" | grep ^.1 | awk -F"'" '{print $$2}'`; \
+	    $(MAKE) NAME=sdsc-R-$${module} VERSION=$${version} R_MODULE=$${module} rpm; \
+	    perl -pi -e 'print $$_ and s/$(NAME)/sdsc-R-'$${module}'/ if m/$(NAME)/' $(NODE_FILE); \
+	  done; \
+	else \
+	  cp -r $(R_MODULES_CACHE)/$(R_MODULE) $(ROOT)/$(PKGROOT); \
+	fi
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
