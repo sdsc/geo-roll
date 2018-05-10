@@ -3,9 +3,11 @@
 <kickstart>
 
 <description>
-geos  http://trac.osgeo.org/geos/
-rgdal http://www.gdal.org/
-proj http://trac.osgeo.org/proj/
+geos - http://trac.osgeo.org/geos
+rgdal - http://www.gdal.org
+proj - http://trac.osgeo.org/proj
+rgdal R package - https://cran.r-project.org/web/packages/rgdal/index.html
+rgeos R package - https://cran.r-project.org/web/packages/rgeos/index.html
 </description>
 
 <copyright>
