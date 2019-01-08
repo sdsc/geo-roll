@@ -4,8 +4,8 @@ endif
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-proj
-VERSION        = 4.9.3
-RELEASE        = 1
+VERSION        = 5.2.0
+RELEASE        = 0
 PKGROOT        = /opt/proj
 
 SRC_SUBDIR     = proj
