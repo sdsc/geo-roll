@@ -15,6 +15,9 @@ my $isCompute = $appliance eq 'Compute';
 my $isFe = $appliance eq 'Frontend';
 my $isLogin = $appliance eq 'Login';
 my $output;
+my $COMPILER = 'COMPILERNAME';
+my %CXX = ('gnu' => 'g++', 'intel' => 'icpc', 'pgi' => 'pgc++');
+my %CC  = ('gnu' => 'gcc', 'intel' => 'icc', 'pgi' => 'pgcc');
 
 my $TESTFILE = "tmpgeo";
 
@@ -45,7 +48,7 @@ open(OUT, ">${TESTFILE}gdal.sh");
 print OUT <<END;
 #!/bin/bash
 module load ROLLCOMPILER gdal
-gcc -I /opt/gdal/include -L /opt/gdal/lib -lgdal -o ${TESTFILE}gdal.exe ${TESTFILE}gdal.c
+$CC{$COMPILER} -I /opt/gdal/include -L /opt/gdal/lib -lgdal -o ${TESTFILE}gdal.exe ${TESTFILE}gdal.c
 ./${TESTFILE}gdal.exe
 END
 close(OUT);
@@ -73,7 +76,7 @@ open(OUT, ">${TESTFILE}geos.sh");
 print OUT <<END;
 #!/bin/bash
 module load ROLLCOMPILER geos
-g++ -I /opt/geos/include -L /opt/geos/lib -lgeos -o ${TESTFILE}geos.exe ${TESTFILE}geos.cpp
+$CXX{$COMPILER} -I /opt/geos/include -L /opt/geos/lib -lgeos -o ${TESTFILE}geos.exe ${TESTFILE}geos.cpp
 ./${TESTFILE}geos.exe
 END
 close(OUT);
