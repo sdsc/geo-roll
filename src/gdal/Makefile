@@ -83,7 +83,7 @@ build: $(SRC_DIRS)
 	  cd $(SOURCE_DIR); \
 	  export CC=$(CC); \
 	  export CXX=$(CXX); \
-	  ./configure --prefix=$(PKGROOT); \
+	  ./configure --prefix=$(PKGROOT) --with-sqlite3=$(REDHAT.ROOT)/cache/build-sqlite --with-proj=$(REDHAT.ROOT)/cache/build-proj; \
 	  $(MAKE) -j 16 \
 	)
 	@echo "::: Package $(NAME) build complete :::"
