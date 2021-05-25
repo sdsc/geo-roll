@@ -20,6 +20,8 @@ All rights reserved. Rocks(r) v7.0 www.rocksclusters.org
 <package>sdsc-geos</package>
 <package>sdsc-geos-modules</package>
 <package>sdsc-proj</package>
+<package>sdsc-sqlite</package>
+<package>sdsc-sqlite-modules</package>
 <package>sdsc-proj-modules</package>
 <package>sdsc-geo-R-modules</package>
 <package>sdsc-geo-roll-test</package>
