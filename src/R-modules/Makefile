@@ -68,7 +68,8 @@ PROJ_CACHE = $(REDHAT.ROOT)/cache/build-proj
 RGDAL_OPTS = --with-gdal-config=$(GDAL_CACHE)/bin/gdal-config \
              --with-proj-include=$(PROJ_CACHE)/include \
              --with-proj-lib=$(PROJ_CACHE)/lib \
-             --with-proj-share=$(PROJ_CACHE)/share/proj
+             --with-proj-share=$(PROJ_CACHE)/share/proj \
+             --with-proj_api="proj.h"
 RGEOS_OPTS = --with-geos-config=$(GEOS_CACHE)/bin/geos-config
 NODE_FILE = $(REDHAT.ROOT)/nodes/geo-common.xml
 
@@ -105,15 +106,16 @@ $(R_MODULES_CACHE):
 	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
 	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
 	  export CC=`R CMD config CC`; \
-	  export CFLAGS=`R CMD config CFLAGS`; \
 	  for F in $(R_MODULES); do \
 	    opts=""; \
 	    if test "$$F" = "rgdal"; then \
+              export PKG_CONFIG_PATH=$(REDHAT.ROOT)/cache/build-proj/lib/pkgconfig; \
 	      opts="$(RGDAL_OPTS)"; \
 	    elif test "$$F" = "rgeos"; then \
 	      opts="$(RGEOS_OPTS)"; \
 	    fi; \
 	    R CMD INSTALL --no-clean-on-error $$F*gz --configure-args="$$opts"; \
+            unset PKG_CONFIG_PATH; \
 	  done \
 	)
 	$(call BIND_UMOUNT, $(PKGROOT))

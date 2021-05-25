@@ -4,4 +4,4 @@ module-whatis "Version: VERSION"
 setenv PROJHOME /opt/proj
 prepend-path PATH /opt/proj/bin
 prepend-path LD_LIBRARY_PATH /opt/proj/lib
-module load ROLLCOMPILER
+module load ROLLCOMPILER sqlite
