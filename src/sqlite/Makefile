@@ -62,85 +62,46 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-GDAL_CACHE = $(REDHAT.ROOT)/cache/build-gdal
-GEOS_CACHE = $(REDHAT.ROOT)/cache/build-geos
-PROJ_CACHE = $(REDHAT.ROOT)/cache/build-proj
-RGDAL_OPTS = --with-gdal-config=$(GDAL_CACHE)/bin/gdal-config \
-             --with-proj-include=$(PROJ_CACHE)/include \
-             --with-proj-lib=$(PROJ_CACHE)/lib \
-             --with-proj-share=$(PROJ_CACHE)/share/proj \
-             --with-proj_api="proj.h"
-RGEOS_OPTS = --with-geos-config=$(GEOS_CACHE)/bin/geos-config
-NODE_FILE = $(REDHAT.ROOT)/nodes/geo-common.xml
-
-R_MODULES_CACHE = $(REDHAT.ROOT)/cache/build-rgeo
-
-LICENSE_FILES = $(SOURCE_DIR)/LICENSE
+SQLITE_CACHE = $(REDHAT.ROOT)/cache/build-sqlite
 
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
+	$(MODULE_LOAD_CC); \
 	( \
 	  $(DESCRIBE_PKG); \
-	  $(DESCRIBE_R) \
+	  $(DESCRIBE_CC) \
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	#TODO
-	#if ! grep -q "GNU GENERAL PUBLIC LICENSE" $(SOURCE_DIR)/COPYING; then \
-	#  exit 2; \
-	#fi
-	echo GPL > $@
+	$(CHECK_LICENSE_FILES)
+	echo MIT > $@
 
 build: $(SRC_DIRS)
-	@echo "::: Package $(NAME) build complete :::"
-
-# Use R to install R modules and any missing prerequisites into a cache dir.
-# NOTE: export of CC/CFLAGS forces package configure to use same CC/CFLAGS
-# that R uses.
-$(R_MODULES_CACHE):
-	mkdir -p -m 755 $(R_MODULES_CACHE)
-	$(call BIND_MOUNT, $(PKGROOT), $(R_MODULES_CACHE))
 	( \
-	  $(MODULE_LOAD_R); \
-	  export LD_LIBRARY_PATH=$(GDAL_CACHE)/lib:$(GEOS_CACHE)/lib:$(PROJ_CACHE)/lib:$${LD_LIBRARY_PATH}; \
-	  export PATH=$(GDAL_CACHE)/bin:$(GEOS_CACHE)/bin:$(PROJ_CACHE)/bin:$${PATH}; \
-	  export CC=`R CMD config CC`; \
-	  for F in $(R_MODULES); do \
-	    opts=""; \
-	    if test "$$F" = "rgdal"; then \
-              export PKG_CONFIG_PATH=$(REDHAT.ROOT)/cache/build-proj/lib/pkgconfig; \
-	      opts="$(RGDAL_OPTS)"; \
-	    elif test "$$F" = "rgeos"; then \
-	      opts="$(RGEOS_OPTS)"; \
-	    fi; \
-	    R CMD INSTALL --no-clean-on-error $$F*gz --configure-args="$$opts"; \
-            unset PKG_CONFIG_PATH; \
-	  done \
+	  $(MODULE_LOAD_CC); \
+	  cd $(SOURCE_DIR); \
+	  export CC=$(CC); \
+	  export CXX=$(CXX); \
+	  ./configure --prefix=$(PKGROOT); \
+	  $(MAKE) -j 16 \
 	)
-	$(call BIND_UMOUNT, $(PKGROOT))
-	for F in $(R_MODULES); do \
-	  if test ! -d $(R_MODULES_CACHE)/$$F; then \
-	    echo error: module $$F build failed; \
-	    exit 2; \
-	  fi; \
-	done
-
-# Package R modules and each prequisite into individual rpms, using R to
-# extract the module version number.  Also have to add each rpm name to the
-# roll node file so that Rocks will install it.
-install:: $(R_MODULES_CACHE)
-	-mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-	if test -z "$(R_MODULE)"; then \
-	  for module in `ls $(R_MODULES_CACHE)`; do \
-	    version=`module load R && export R_LIBS=$(R_MODULES_CACHE) && R -q -e "packageVersion('$${module}')" | grep ^.1 | awk -F"'" '{print $$2}'`; \
-	    $(MAKE) NAME=sdsc-R-$${module} VERSION=$${version} R_MODULE=$${module} rpm; \
-	    perl -pi -e 'print $$_ and s/$(NAME)/sdsc-R-'$${module}'/ if m/$(NAME)/' $(NODE_FILE); \
-	  done; \
-	else \
-	  cp -r $(R_MODULES_CACHE)/$(R_MODULE) $(ROOT)/$(PKGROOT); \
-	fi
+	@echo "::: Package $(NAME) build complete :::"
+	
+install::
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	( \
+	  cd $(SOURCE_DIR); \
+	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
+	)
+	$(INSTALL_LICENSE_FILES)
+	mkdir -p -m 755 $(SQLITE_CACHE)
+	cp -r $(ROOT)/$(PKGROOT)/* $(SQLITE_CACHE)/
+	# Fix paths in cached copy
+	perl -pi -e "s#$(PKGROOT)#$(SQLITE_CACHE)#g" \
+	  `find $(SQLITE_CACHE) -type f -exec grep -Il . {} ';'`
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -fr DESCRIPTION LICENSE $(R_MODULES)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+

@@ -83,6 +83,7 @@ build: $(SRC_DIRS)
 	  cd $(SOURCE_DIR); \
 	  export CC=$(CC); \
 	  export CXX=$(CXX); \
+          export PKG_CONFIG_PATH=$(REDHAT.ROOT)/cache/build-sqlite/lib/pkgconfig; \
 	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) -j 16 \
 	)

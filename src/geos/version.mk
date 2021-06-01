@@ -4,7 +4,7 @@ endif
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-geos
-VERSION        = 3.7.1
+VERSION        = 3.9.1
 RELEASE        = 0
 PKGROOT        = /opt/geos
 

@@ -4,3 +4,4 @@ module-whatis "Version: VERSION"
 setenv GDALHOME /opt/gdal
 prepend-path PATH /opt/gdal/bin
 prepend-path LD_LIBRARY_PATH /opt/gdal/lib
+module load proj

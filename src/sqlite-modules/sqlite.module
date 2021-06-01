@@ -1,0 +1,8 @@
+#%Module1.0
+module-whatis "sqlite"
+module-whatis "Version: VERSION"
+setenv SQLITEHOME /opt/sqlite
+prepend-path PATH /opt/sqlite/bin
+prepend-path LD_LIBRARY_PATH /opt/sqlite/lib
+prepend-path MANPATH /opt/sqlite/share/man
+module load ROLLCOMPILER
